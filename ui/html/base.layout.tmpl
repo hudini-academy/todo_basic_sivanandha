@@ -1,0 +1,27 @@
+{{define "base"}}
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>ToDo Application</title>
+    <link rel="stylesheet" href='/static/css/style.css'>
+    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Ubuntu'>
+</head>
+<body>
+    {{template "header" .}}
+    <nav>
+        <div>
+            <a href='/user/signup'>Signup</a>
+            <a href='/user/login'>Login</a>
+            <form action='/user/logout' method='POST'>
+                <button>Logout</button>
+            </form>
+        </div>
+    </nav>
+    <section class="container">
+        {{template "body" .}}
+    </section>
+    {{template "list" .}}
+</body>
+</html>
+{{end}}

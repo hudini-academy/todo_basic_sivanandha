@@ -1,0 +1,51 @@
+{{template "base" .}}
+{{define "title"}}ToDo{{end}}
+{{define "header"}}
+    <header>
+        <h1>ToDo Tasks</h1>
+        
+    </header>
+{{end}}
+{{define "body"}}
+    
+    <form method="POST" action="/tasks">
+        <label>Task Title</label><br />
+        
+        {{if .Flash}}
+            <div class="flash">
+                {{.Flash}}
+            </div>
+        {{end}}
+            <input type="text" name="text"><br />
+        <label>Description</label><br />
+            <textarea name="message"></textarea><br />
+        <label>Mark as done</label><br />
+            <input type="checkbox" id="done" name="done" value="done">
+        <label for="done">done</label><br>    
+            <input type="submit">
+    </form>
+{{end}}
+{{define "list"}}
+    <h2>Latest Task</h2>
+    {{if eq (len .Tasks) 0}}
+        task is empty
+    {{else}}
+        <ol>
+            {{range .Tasks}}
+                <li>
+                    <p>{{.Name}}  {{.Description}} <br><br> {{.Created}} <br> {{.Expires}}</p>
+                    <form method="POST" action="tasks/delete?id={{.ID}}">
+                        <input type="submit" value="delete">
+                    </form>
+                    <form method="POST" action="tasks/update?id={{.ID}}">
+                        <input type="text" name="update">
+                        <input type="submit" value="update">
+                    </form>
+        
+                </li>
+                
+            {{end}}
+        </ol>
+        
+    {{end}}
+{{end}}

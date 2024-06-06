@@ -1,0 +1,4 @@
+ERROR	2024/06/06 17:36:09 helpers.go:16: Error 1062 (23000): Duplicate entry 'helo@122' for key 'users.users_uc_email'
+
+ERROR	2024/06/06 17:36:09 helpers.go:16: Error 1062 (23000): Duplicate entry 'helo@122' for key 'users.users_uc_email'
+
