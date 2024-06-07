@@ -79,7 +79,7 @@ func (app *application) addTask(w http.ResponseWriter, r *http.Request) {
 		app.session.Put(r, "flash", "This field cannot be blank")
 	} else if utf8.RuneCountInString(taskName) > 100 {
 		app.session.Put(r, "flash", "This field is too long (maximum is 100 characters")
-	}else {
+	} else {
 		_, err := app.todos.Insert(taskName, taskDesc, "365")
 		if err != nil {
 			app.serverError(w, err)
@@ -159,25 +159,25 @@ func (app *application) signupUserForm(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", 500)
 		return
 	}
-	ts.Execute(w, nil)
+	ts.Execute(w, app.session.PopString(r, "flash"))
 
 }
 func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
-	userName:= r.FormValue("name")
+	userName := r.FormValue("name")
 	userEmail := r.FormValue("email")
 	userPass := r.FormValue("password")
-	if strings.TrimSpace(userName)=="" && strings.TrimSpace(userEmail)== ""  {
+	if strings.TrimSpace(userName) == "" && strings.TrimSpace(userEmail) == "" {
 		app.session.Put(r, "flash", "This field cannot be blank")
-	}else{
-		err := app.users.Insert(userName,userEmail,userPass)
+	} else {
+		err := app.users.Insert(userName, userEmail, userPass)
 		if err != nil {
 			app.serverError(w, err)
 			return
-		}else {
+		} else {
 			app.session.Put(r, "flash", "Signup successful!")
 		}
 	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)	
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
 	files := []string{
@@ -190,12 +190,31 @@ func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", 500)
 		return
 	}
-	ts.Execute(w, nil)
-	
+	ts.Execute(w, app.session.PopString(r, "flash"))
+
 }
 func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
-	
+	userEmail := r.FormValue("email")
+	userPass := r.FormValue("password")
+	isUser, err := app.users.Authenticate(userEmail, userPass)
+	if err != nil {
+		app.errorLog.Println(err.Error())
+		http.Error(w, "internal server error", 500)
+		return
+	}
+	if isUser {
+		app.session.Put(r, "Authentication", true)
+		app.session.Put(r, "flash", "Login Successful")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	} else {
+		app.session.Put(r, "flash", "Login failed")
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+		app.session.Put(r, "Authentiaction", false)
+
+	}
 }
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Logout the user...")
+	app.session.Remove(r, "id")
+	app.session.Put(r, "flash", "You've been logged out successfully!")
+	http.Redirect(w, r, "/user/login", 303)
 }

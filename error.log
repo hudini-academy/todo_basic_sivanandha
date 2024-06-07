@@ -2,3 +2,4 @@ ERROR	2024/06/06 17:36:09 helpers.go:16: Error 1062 (23000): Duplicate entry 'he
 
 ERROR	2024/06/06 17:36:09 helpers.go:16: Error 1062 (23000): Duplicate entry 'helo@122' for key 'users.users_uc_email'
 
+ERROR	2024/06/06 20:50:30 main.go:58: listen tcp :3000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
