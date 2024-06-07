@@ -25,6 +25,7 @@
             <input type="submit">
     </form>
 {{end}}
+
 {{define "list"}}
     <h2>Latest Task</h2>
     {{if eq (len .Tasks) 0}}
@@ -46,6 +47,6 @@
                 
             {{end}}
         </ol>
-        
     {{end}}
 {{end}}
+

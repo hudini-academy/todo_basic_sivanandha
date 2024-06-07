@@ -8,3 +8,99 @@ ERROR	2024/06/07 10:22:35 helpers.go:16: Error 1062 (23000): Duplicate entry 'ki
 ERROR	2024/06/07 10:29:14 helpers.go:16: Error 1062 (23000): Duplicate entry 'kivi' for key 'users.users_uc_email'
 
 ERROR	2024/06/07 10:35:30 handler.go:173: Error 1062 (23000): Duplicate entry 'kivi' for key 'users.users_uc_email'
+ERROR	2024/06/07 12:18:00 helpers.go:16: Error 1136 (21S01): Column count doesn't match value count at row 1
+
+ERROR	2024/06/07 12:18:54 helpers.go:16: Error 1136 (21S01): Column count doesn't match value count at row 1
+
+ERROR	2024/06/07 12:18:59 helpers.go:16: Error 1136 (21S01): Column count doesn't match value count at row 1
+
+ERROR	2024/06/07 12:35:45 handler.go:111: Error 1062 (23000): Duplicate entry '' for key 'users.users_uc_email'
+ERROR	2024/06/07 12:38:28 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:29 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:29 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:29 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:29 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:29 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:29 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:38:34 handler.go:111: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 12:41:24 handler.go:112: Error 1136 (21S01): Column count doesn't match value count at row 1
+ERROR	2024/06/07 13:05:24 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:05:25 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:05:25 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:05:25 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:05:27 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:05:28 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:34 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:34 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:49:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 13:50:19 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:50:21 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:50:43 handler.go:99: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:55:01 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:55:06 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:56:33 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:56:33 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:56:33 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:56:34 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:56:34 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:56:40 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:57:37 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:57:38 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:57:38 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:57:38 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:57:38 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:57:39 handler.go:98: template: special.page.tmpl:29: unexpected <define> in command
+ERROR	2024/06/07 13:58:54 handler.go:98: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 13:58:55 handler.go:98: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 13:58:55 handler.go:98: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 13:58:55 handler.go:98: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 13:59:52 handler.go:99: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 13:59:53 handler.go:99: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 14:03:03 handler.go:99: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 14:08:10 handler.go:99: template: special.page.tmpl:46: unexpected EOF
+ERROR	2024/06/07 15:06:43 helpers.go:16: runtime error: slice bounds out of range [:8] with length 6
+
+ERROR	2024/06/07 15:06:43 server.go:3212: http: superfluous response.WriteHeader call from main.(*application).serverError (helpers.go:18)
+ERROR	2024/06/07 15:09:33 helpers.go:16: runtime error: slice bounds out of range [:8] with length 6
+
+ERROR	2024/06/07 15:09:33 server.go:3212: http: superfluous response.WriteHeader call from main.(*application).serverError (helpers.go:18)
+ERROR	2024/06/07 15:09:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:09:36 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:11:09 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:11:14 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:11:14 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:11:15 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:46 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:46 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:46 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:47 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:47 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:47 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:47 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:13:47 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:14:35 handler.go:44: template: home.page.tmpl:28: unexpected {{end}}
+ERROR	2024/06/07 15:15:40 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:40 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:40 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:40 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:41 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:41 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:41 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:41 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:15:41 handler.go:44: template: home.page.tmpl:52: unexpected EOF
+ERROR	2024/06/07 15:21:13 helpers.go:16: runtime error: slice bounds out of range [:8] with length 5
+
+ERROR	2024/06/07 15:21:13 server.go:3212: http: superfluous response.WriteHeader call from main.(*application).serverError (helpers.go:18)
+ERROR	2024/06/07 15:22:08 helpers.go:16: runtime error: slice bounds out of range [:8] with length 5
+
+ERROR	2024/06/07 15:22:08 server.go:3212: http: superfluous response.WriteHeader call from main.(*application).serverError (helpers.go:18)

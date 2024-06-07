@@ -23,8 +23,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	// panic("oops! something went wrong")
-
 	// Latest() assigining to a variable s
 	s, err := app.todos.Latest()
 	if err != nil {
@@ -44,7 +42,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		//change to errorLog that we created in main
 		app.errorLog.Println(err.Error())
-		http.Error(w, "internal server error", 500)
+		http.Error(w, "internal server error1", 500)
 		return
 	}
 
@@ -58,7 +56,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		http.Error(w, "Internal Server Error2", 500)
 	}
 
 }
@@ -70,24 +68,70 @@ func (app *application) addTask(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-
 	// inserting the values from form
 	taskName := r.FormValue("text")
 	taskDesc := r.FormValue("message")
-
-	if strings.TrimSpace(taskName) == "" && strings.TrimSpace(taskDesc) == "" {
-		app.session.Put(r, "flash", "This field cannot be blank")
-	} else if utf8.RuneCountInString(taskName) > 100 {
-		app.session.Put(r, "flash", "This field is too long (maximum is 100 characters")
-	} else {
-		_, err := app.todos.Insert(taskName, taskDesc, "365")
+	fmt.Println(taskName[:8])
+	if strings.Contains(taskName, "Special") {
+		fmt.Println("Here")
+		_, err := app.specials.Insert(taskName, taskDesc, "10")
 		if err != nil {
-			app.serverError(w, err)
-			return
+			app.errorLog.Println(err.Error())
+			http.Error(w, "internal server error", 500)
+		}
+	}else {
+		if strings.TrimSpace(taskName) == "" && strings.TrimSpace(taskDesc) == "" {
+			app.session.Put(r, "flash", "This field cannot be blank")
+		} else if utf8.RuneCountInString(taskName) > 100 {
+			app.session.Put(r, "flash", "This field is too long (maximum is 100 characters")
 		} else {
-			app.session.Put(r, "flash", "Task successfully created!")
+			_, err := app.todos.Insert(taskName, taskDesc, "365")
+			if err != nil {
+				app.serverError(w, err)
+				return
+			} else {
+				app.session.Put(r, "flash", "Task successfully created!")
+			}
 		}
 	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+func (app *application) specialTask(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		w.Header().Set("Allow", "POST")
+		app.clientError(w, http.StatusMethodNotAllowed)
+		return
+	}
+	st, errr := app.specials.Latest()
+	if errr != nil {
+		app.serverError(w, errr)
+		log.Println(errr)
+		return
+	}
+	files := []string{
+		"./ui/html/special.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+	}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.errorLog.Println(err.Error())
+		http.Error(w, "internal server error", 500)
+		return
+	}
+	err = ts.Execute(w, struct {
+		Sp []*models.Special
+		Flash string
+	}{
+		Sp: st,
+		Flash: app.session.PopString(r, "flash"),
+	})
+	if err != nil{
+		app.errorLog.Println(err.Error())
+		http.Error(w, "internal server error", 500)
+		return
+	}
+
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
@@ -108,7 +152,21 @@ func (app *application) getTask(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "%v", s)
 }
-
+func (app *application) delSpecialTask(w http.ResponseWriter, r *http.Request){
+	delSp := r.URL.Query().Get("id")
+	delId, err := strconv.Atoi(delSp)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "internal server error", 500)
+	}
+	// assigning delete to a variable 'er'
+	er := app.specials.Delete(delId)
+	if er != nil {
+		log.Println(er.Error())
+		http.Error(w, "internal server error", 500)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
 // function for delete and changed the function with method *application
 func (app *application) delTask(w http.ResponseWriter, r *http.Request) {
 	del := r.URL.Query().Get("id")
@@ -169,13 +227,13 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	err := app.users.Insert(userName, userEmail, userPass)
 	if strings.TrimSpace(userName) == "" && strings.TrimSpace(userEmail) == "" {
 		app.session.Put(r, "flash", "This field cannot be blank")
-	}else if err != nil{
+	} else if err != nil {
 		app.errorLog.Println(err.Error())
-        app.session.Put(r, "flash", "User already exist")
-        http.Redirect(w, r, "/user/signup", http.StatusSeeOther)	
+		app.session.Put(r, "flash", "User already exist")
+		http.Redirect(w, r, "/user/signup", http.StatusSeeOther)
 	} else {
-			app.session.Put(r, "Authenticated", true)
-			app.session.Put(r, "flash", "Signup successful!")
+		app.session.Put(r, "Authenticated", true)
+		app.session.Put(r, "flash", "Signup successful!")
 	}
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
