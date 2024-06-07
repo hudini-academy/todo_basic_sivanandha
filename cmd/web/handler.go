@@ -166,16 +166,16 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	userName := r.FormValue("name")
 	userEmail := r.FormValue("email")
 	userPass := r.FormValue("password")
+	err := app.users.Insert(userName, userEmail, userPass)
 	if strings.TrimSpace(userName) == "" && strings.TrimSpace(userEmail) == "" {
 		app.session.Put(r, "flash", "This field cannot be blank")
+	}else if err != nil{
+		app.errorLog.Println(err.Error())
+        app.session.Put(r, "flash", "User already exist")
+        http.Redirect(w, r, "/user/signup", http.StatusSeeOther)	
 	} else {
-		err := app.users.Insert(userName, userEmail, userPass)
-		if err != nil {
-			app.serverError(w, err)
-			return
-		} else {
+			app.session.Put(r, "Authenticated", true)
 			app.session.Put(r, "flash", "Signup successful!")
-		}
 	}
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
