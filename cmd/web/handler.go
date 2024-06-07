@@ -134,6 +134,22 @@ func (app *application) specialTask(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+// create function for delete special task
+func (app *application) delSpecialTask(w http.ResponseWriter, r *http.Request){
+	delSp := r.URL.Query().Get("id")
+	delId, err := strconv.Atoi(delSp)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "internal server error", 500)
+	}
+	// assigning delete to a variable 'er'
+	er := app.specials.Delete(delId)
+	if er != nil {
+		log.Println(er.Error())
+		http.Error(w, "internal server error", 500)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
 
 // function for get one task based on their id
 func (app *application) getTask(w http.ResponseWriter, r *http.Request) {
@@ -152,21 +168,7 @@ func (app *application) getTask(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "%v", s)
 }
-func (app *application) delSpecialTask(w http.ResponseWriter, r *http.Request){
-	delSp := r.URL.Query().Get("id")
-	delId, err := strconv.Atoi(delSp)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "internal server error", 500)
-	}
-	// assigning delete to a variable 'er'
-	er := app.specials.Delete(delId)
-	if er != nil {
-		log.Println(er.Error())
-		http.Error(w, "internal server error", 500)
-	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
+
 // function for delete and changed the function with method *application
 func (app *application) delTask(w http.ResponseWriter, r *http.Request) {
 	del := r.URL.Query().Get("id")
