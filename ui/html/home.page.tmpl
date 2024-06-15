@@ -35,7 +35,7 @@
             {{range .Tasks}}
                 <li>
                     <p>{{.Name}}  {{.Description}} <br><br> {{.Created}} <br> {{.Expires}}</p>
-                    <form method="POST" action="tasks/delete?id={{.ID}}">
+                    <form method="POST" action="tasks/delete?id={{.ID}}&name={{.Name}}">
                         <input type="submit" value="delete">
                     </form>
                     <form method="POST" action="tasks/update?id={{.ID}}">

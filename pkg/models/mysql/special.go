@@ -26,34 +26,40 @@ func (m *SpecialModel) Insert(name, description,expires string) (int, error) {
 	// The ID returned has the type int64, so we convert it to an int type before returning.
 	return int(id), nil
 }
-func (m *SpecialModel) Latest() ([]*models.Special, error) {
-	stmt := `SELECT id, title,content, created, expires FROM specials
-	WHERE expires > UTC_TIMESTAMP()`
+func (m *SpecialModel) GetSpecial() ([]*models.Special, error){
+	stmt:= `SELECT * FROM specials`
 	rows, err := m.DB.Query(stmt)
-	if err != nil {
+	if err != nil{
 		return nil, err
 	}
 	defer rows.Close()
-	specialss := []*models.Special{}
+	special := []*models.Special{}
 	for rows.Next(){
 		s := &models.Special{}
-		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
-		if err != nil {
+		err = rows.Scan(&s.ID,&s.Title,&s.Content, &s.Created,&s.Expires)
+		if err != nil{
 			return nil, err
 		}
-		specialss= append(specialss, s)
+		special= append(special, s)
+		if err = rows.Err(); err != nil {
+			return nil, err
+		}
+		
 	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	return specialss, nil
+	return special, nil
+
 }
-func (m *SpecialModel) Delete(id int) error{
+func (m *SpecialModel) DeleteSpl(title string) error{
 	// SQL statement for deleting task
-	stmt:= `DELETE FROM specials WHERE id = ?;`
-	_, err := m.DB.Exec(stmt, id)
+	stmt:= `DELETE FROM specials WHERE title = ?;`
+	stmt2:= `DELETE FROM todos WHERE name = ?;`
+	_, err := m.DB.Exec(stmt, title)
 	if err != nil {
   		panic(err)
+	}
+	_, err1 := m.DB.Exec(stmt2, title)
+	if err1 != nil {
+  		panic(err1)
 	}
 	return nil
 }

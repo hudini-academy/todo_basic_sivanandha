@@ -17,7 +17,7 @@ type application struct {
 	todos    *mysql.TodoModel
 	session *sessions.Session
 	users *mysql.UserModel
-	specials *mysql.SpecialModel
+	Specials *mysql.SpecialModel
 }
 
 func main() {
@@ -46,7 +46,7 @@ func main() {
 		todos:    &mysql.TodoModel{DB: db},
 		session: session,
 		users: &mysql.UserModel{DB: db},
-		specials: &mysql.SpecialModel{DB: db},
+		Specials: &mysql.SpecialModel{DB: db},
 	}
 	//Initialize new http server struct
 	serv := &http.Server{

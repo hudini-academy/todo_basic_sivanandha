@@ -16,8 +16,8 @@ func (app *application) routes() http.Handler {
 	mux.Get("/tasks/get", app.session.Enable(http.HandlerFunc(app.getTask)))
 	mux.Post("/tasks/update", app.session.Enable(http.HandlerFunc(app.updateTask)))
 
-	mux.Post("/user/special", app.session.Enable(http.HandlerFunc(app.specialTask)))
-	mux.Post("/user/delete", app.session.Enable(http.HandlerFunc(app.delSpecialTask)))
+	mux.Get("/user/special", app.session.Enable(http.HandlerFunc(app.specialTask)))
+	mux.Post("/user/special/delete", app.session.Enable(http.HandlerFunc(app.delSpecialTask)))
 
 	mux.Get("/user/signup", app.session.Enable(http.HandlerFunc(app.signupUserForm)))
 	mux.Post("/user/signup", app.session.Enable(http.HandlerFunc(app.signupUser)))

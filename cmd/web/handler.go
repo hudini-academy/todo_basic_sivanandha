@@ -1,36 +1,28 @@
 package main
 
 import (
-	//"fmt"
-	// "errors"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
-	"unicode/utf8"
-
-	//"strings"
-	//"strconv"
 	"TODO/pkg/models"
 )
 
-// created handler for home
-// changed with *application
+// home function that return all the task that received
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
-	// Latest() assigining to a variable s
-	s, err := app.todos.Latest()
+	// taking the value using GetAllTAsk()
+	s, err := app.todos.GetAllTask()
 	if err != nil {
 		app.serverError(w, err)
 		log.Println(err)
 		return
 	}
-
 	// storing all templates to a files
 	files := []string{
 		"./ui/html/home.page.tmpl",
@@ -38,14 +30,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	}
 	//create template.parsefile for reading the template
 	ts, err := template.ParseFiles(files...)
-	//if there is error we will log print the error to the user
 	if err != nil {
 		//change to errorLog that we created in main
 		app.errorLog.Println(err.Error())
 		http.Error(w, "internal server error1", 500)
 		return
 	}
-
+	// executing the template
 	err = ts.Execute(w, struct {
 		Tasks []*models.Todos
 		Flash string
@@ -53,15 +44,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		Tasks: s,
 		Flash: app.session.PopString(r, "flash"),
 	})
-
 	if err != nil {
 		app.errorLog.Println(err.Error())
 		http.Error(w, "Internal Server Error2", 500)
 	}
-
 }
 
-// here also changing the function
+// this function will do take the values from user and store to the db
 func (app *application) addTask(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.Header().Set("Allow", "POST")
@@ -71,44 +60,39 @@ func (app *application) addTask(w http.ResponseWriter, r *http.Request) {
 	// inserting the values from form
 	taskName := r.FormValue("text")
 	taskDesc := r.FormValue("message")
-	fmt.Println(taskName[:8])
-	if strings.Contains(taskName, "Special") {
-		fmt.Println("Here")
-		_, err := app.specials.Insert(taskName, taskDesc, "10")
-		if err != nil {
-			app.errorLog.Println(err.Error())
-			http.Error(w, "internal server error", 500)
-		}
-	}else {
-		if strings.TrimSpace(taskName) == "" && strings.TrimSpace(taskDesc) == "" {
-			app.session.Put(r, "flash", "This field cannot be blank")
-		} else if utf8.RuneCountInString(taskName) > 100 {
-			app.session.Put(r, "flash", "This field is too long (maximum is 100 characters")
-		} else {
-			_, err := app.todos.Insert(taskName, taskDesc, "365")
-			if err != nil {
-				app.serverError(w, err)
-				return
-			} else {
-				app.session.Put(r, "flash", "Task successfully created!")
+	//checking the length of task name
+	if len(strings.TrimSpace(taskName)) != 0{
+		//  insert to the db
+		_, err := app.todos.Insert(taskName,taskDesc,"20")
+		app.session.Put(r,"flash","task created successfully")
+		// checking it is special task
+		isSpecial := strings.Contains(taskName,"Special")
+		if isSpecial{
+			_, err := app.Specials.Insert(taskName,taskDesc,"10")
+			if err != nil{
+				app.errorLog.Println(err.Error())
+				http.Error(w,"internal server error",500)
 			}
 		}
+		if err != nil{
+			app.errorLog.Println(err.Error())
+			http.Error(w,"internal server error",500)
+		}else{
+			app.session.Put(r,"flash","task created succesfully")
+		}
 	}
-
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+// specialtask function return all the special task list in the special task page
 func (app *application) specialTask(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		w.Header().Set("Allow", "POST")
-		app.clientError(w, http.StatusMethodNotAllowed)
-		return
-	}
-	st, errr := app.specials.Latest()
+
+	st, errr := app.Specials.GetSpecial()
 	if errr != nil {
 		app.serverError(w, errr)
 		log.Println(errr)
 		return
 	}
+
 	files := []string{
 		"./ui/html/special.page.tmpl",
 		"./ui/html/base.layout.tmpl",
@@ -120,35 +104,28 @@ func (app *application) specialTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	err = ts.Execute(w, struct {
-		Sp []*models.Special
-		Flash string
+		Task []*models.Special
 	}{
-		Sp: st,
-		Flash: app.session.PopString(r, "flash"),
+		Task : st,
 	})
-	if err != nil{
+	if err != nil {
 		app.errorLog.Println(err.Error())
 		http.Error(w, "internal server error", 500)
 		return
 	}
-
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	app.infoLog.Println("Displayed special page")
 }
-// create function for delete special task
-func (app *application) delSpecialTask(w http.ResponseWriter, r *http.Request){
-	delSp := r.URL.Query().Get("id")
-	delId, err := strconv.Atoi(delSp)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "internal server error", 500)
-	}
+
+// create function for delete special task according with the name
+func (app *application) delSpecialTask(w http.ResponseWriter, r *http.Request) {
+	title := r.URL.Query().Get("name")
 	// assigning delete to a variable 'er'
-	er := app.specials.Delete(delId)
+	er := app.Specials.DeleteSpl(title)
 	if er != nil {
 		log.Println(er.Error())
 		http.Error(w, "internal server error", 500)
 	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/user/special", http.StatusSeeOther)
 }
 
 // function for get one task based on their id
@@ -171,14 +148,9 @@ func (app *application) getTask(w http.ResponseWriter, r *http.Request) {
 
 // function for delete and changed the function with method *application
 func (app *application) delTask(w http.ResponseWriter, r *http.Request) {
-	del := r.URL.Query().Get("id")
-	delId, err := strconv.Atoi(del)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "internal server error", 500)
-	}
+	title := r.URL.Query().Get("name")
 	// assigning delete to a variable 'er'
-	er := app.todos.Delete(delId)
+	er := app.todos.Delete(title)
 	if er != nil {
 		log.Println(er.Error())
 		http.Error(w, "internal server error", 500)
@@ -222,6 +194,7 @@ func (app *application) signupUserForm(w http.ResponseWriter, r *http.Request) {
 	ts.Execute(w, app.session.PopString(r, "flash"))
 
 }
+
 func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	userName := r.FormValue("name")
 	userEmail := r.FormValue("email")
@@ -239,6 +212,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
+
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"./ui/html/login.page.tmpl",

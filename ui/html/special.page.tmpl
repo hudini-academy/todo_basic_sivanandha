@@ -1,26 +1,25 @@
 {{template "base" .}}
 {{define "title"}}Special Task{{end}}
 {{define "header"}}
-    <header>
-        <h1>ToDo Special Tasks</h1>
-    </header>
+<header>
+    <h1>ToDo Special Tasks</h1>
+</header>
 {{end}}
 {{define "body"}}
-    {{define "List"}}
         <h2>Special Tasks</h2>
-        {{if eq (len .Sp) 0}}
-            task is empty
+        {{if eq (len .Task) 0}}
+            Task list is empty.
         {{else}}
             <ol>
-                {{range .Sp}}
+                {{range .Task}}
                     <li>
                         <p>{{.Title}} <br><br> {{.Content}} <br><br> {{.Created}} <br> {{.Expires}}</p>
-                        <form method="POST" action="tasks/delete?id={{.ID}}">
-                            <input type="submit" value="delete">
+                        <form method="POST" action="/user/special/delete?id={{.ID}}&name={{.Title}}">
+                            <input type="submit" value="Delete">
                         </form>
                     </li>
                 {{end}}
             </ol>
-    {{end}}
-
+        {{end}}
 {{end}}
+{{define "list"}}{{end}}

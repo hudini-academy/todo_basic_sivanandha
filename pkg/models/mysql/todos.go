@@ -29,13 +29,27 @@ func (m *TodoModel) Insert(name,description, expires string) (int, error) {
 	return int(id), nil
 }
 // created a function for delete task
-func (m *TodoModel) Delete(id int) error{
+func (m *TodoModel) Delete(title string) error{
 	// SQL statement for deleting task
-	stmt:= `DELETE FROM todos WHERE id = ?;`
-	_, err := m.DB.Exec(stmt, id)
+	var exists bool
+	stmt:= `DELETE FROM todos WHERE name = ?`
+	stmt2 := `DELETE FROM specials WHERE title = ?`
+	errexis := m.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM specials WHERE title = ?)",title).Scan(&exists)
+	if errexis!= nil{
+		panic(errexis)
+
+	}
+
+	_, err := m.DB.Exec(stmt, title)
 	if err != nil {
   		panic(err)
 	}
+	if exists{
+	_, err1 := m.DB.Exec(stmt2, title)
+	if err1 != nil {
+  		panic(err1)
+	}
+}
 	return nil
 }
 // This function will return a specific todos based on its id.
@@ -57,7 +71,7 @@ func (m *TodoModel) Get(id int) (*models.Todos, error) {
 	return s, nil
 }
 // This will return the 10 most recently created todos.
-func (m *TodoModel) Latest() ([]*models.Todos, error) {
+func (m *TodoModel) GetAllTask() ([]*models.Todos, error) {
 	stmt := `SELECT id, name, description, created, expires FROM todos
 	WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
 	rows, err := m.DB.Query(stmt)
